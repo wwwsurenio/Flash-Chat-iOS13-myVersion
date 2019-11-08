@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import FirebaseCore
+import FirebaseFirestore
+import FirebaseAuth
 
 class LoginViewController: UIViewController {
 
@@ -15,6 +18,23 @@ class LoginViewController: UIViewController {
     
 
     @IBAction func loginPressed(_ sender: UIButton) {
+        
+        if let email = emailTextfield.text, let password = passwordTextfield.text{
+            Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
+                if let e = error {
+                    let alert = UIAlertController(title: "Error", message: e.localizedDescription, preferredStyle: UIAlertController.Style.alert)
+                    self.present(alert, animated: true, completion: nil)
+                    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+                    alert.addAction(cancelAction)
+                } else {
+                    //Navigate to the ChatViewController
+                    self.performSegue(withIdentifier: K.loginSegue, sender: self)
+                }
+                
+            }
+        }
+        
+        
     }
     
 }
